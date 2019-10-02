@@ -37,7 +37,7 @@ class QueryLogServiceProvider extends ServiceProvider
             $excludes = config('logging.channels.querylog.excludes', null);
             $skip = $excludes && (
                 (is_callable($excludes) && $excludes($sql)) ||
-                (is_string($excludes) && preg_match('/'.preg_quote($excludes).'/', $sql))
+                (is_string($excludes) && preg_match('/'.preg_quote($excludes).'/ui', $sql))
             );
             if ($skip) return;
 
