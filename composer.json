@@ -2,14 +2,27 @@
     "name": "programming_cat/querylog",
     "description": "output query log with 'querylog' channel",
     "type": "library",
+    "keywords": [
+        "wildcard",
+        "programming_cat",
+        "laravel",
+        "package",
+        "query",
+        "sql",
+        "log"
+    ],
     "require": {
-        "laravel/framework": ">=5.8"
+        "php": "~7.1"
+    },
+    "require-dev": {
+        "laravel/framework": "5.8.*|^6.0"
     },
     "license": "MIT",
     "authors": [
         {
             "name": "T.Yamazaki",
-            "email": "takanori@it-gypsy.jp"
+            "email": "takanori@it-gypsy.jp",
+            "role": "Developer"
         }
     ],
     "minimum-stability": "stable",

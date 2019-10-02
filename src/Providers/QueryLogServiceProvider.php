@@ -33,6 +33,14 @@ class QueryLogServiceProvider extends ServiceProvider
         // クエリーログ
         \DB::listen(function ($query) {
             $sql = $query->sql;
+
+            $excludes = config('logging.channels.querylog.excludes', null);
+            $skip = $excludes && (
+                (is_callable($excludes) && $excludes($sql)) ||
+                (is_string($excludes) && preg_match('/'.preg_quote($excludes).'/', $sql))
+            );
+            if ($skip) return;
+
             // アクティビティログとauditログへの書き込みは記録しないよ。
             if (Str::startsWith($sql, ['insert into `activity_logs`', 'insert into `audits`'])) {
                 return;

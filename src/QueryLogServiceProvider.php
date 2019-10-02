@@ -20,10 +20,9 @@ class QueryLogServiceProvider extends ServiceProvider
      * merge config to "logging.channels"
      */
     private function bootConfig() {
-        $this->mergeConfigFrom(
-            __DIR__.'/config/logging/channels/querylog.php',
-            'logging.channels.querylog'
-        );
+        $app_config = config('logging.channels.querylog', []);
+        $my_config = require(__DIR__.'/config/logging/channels/querylog.php');
+        $this->app['config']->set('logging.channels.querylog', array_merge($my_config, $app_config));
     }
 
 }
