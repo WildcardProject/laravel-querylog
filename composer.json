@@ -34,7 +34,7 @@
     "extra": {
         "laravel": {
             "providers": [
-                "programming_cat\\QueryLog\\Providers\QueryLogServiceProvider"
+                "programming_cat\\QueryLog\\Providers\\QueryLogServiceProvider"
             ]
         }
     }
