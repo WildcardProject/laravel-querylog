@@ -10,29 +10,21 @@ use Monolog\Handler\RotatingFileHandler;
 use Monolog\Formatter\LineFormatter;
 
 class CreateQueryLogger {
-	public function __invoke(array $config) {
-		// 引数の $config には、config/logging.php で sqlQueryLog に設定した path とか days とかが入ってる！
+    public function __invoke(array $config) {
+        $level = Logger::toMonologLevel($config['level']);
+        $filePermission = 0666;
 
-		// 'debug' とかの文字列をMonologが使えるログレベルに変換
-		$level = Logger::toMonologLevel($config['level']);
+        if (isset($config['days']) && is_numeric($config['days']) && $config['days']>0) {
+            $hander = new RotatingFileHandler($config['path'], $config['days'], $level, true, $filePermission);
+        } else {
+            $hander = new StreamHandler($config['path'], $level , true, $filePermission);
+        }
 
-		//ログファイルのパーミッションを変更できるので、必要な場合は入れておく
-		$filePermission = 0777;
+        $hander->setFormatter(new LineFormatter(/* format */ null, /* dateFormat */ null, /* allowInlineLineBreaks */ true, /* ignoreEmptyContextAndExtra */ true));
 
-		// 日ごとにログローテートするハンドラ作成
-		if (isset($config['days']) && is_numeric($config['days'])) {
-			$hander = new RotatingFileHandler($config['path'], $config['days'], $level, true, $filePermission);
-		} else {
-			$hander = new StreamHandler($config['path'], $level , true, $filePermission);
-		}
+        $logger = new Logger('SQL');
+        $logger->pushHandler($hander);
+        return $logger;
 
-		// 改行コードを出力する＆カラのコンテキストを出力しないフォーマッタを設定
-		$hander->setFormatter(new LineFormatter(null, null, true, true));
-
-		// Monologインスタンス作成してハンドラ設定して返却
-		$logger = new Logger('SQL');  // ロガー名は 'SQL' にした。これはログに出力される
-		$logger->pushHandler($hander);
-		return $logger;
-
-	}
+    }
 }

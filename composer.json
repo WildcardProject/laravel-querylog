@@ -1,5 +1,5 @@
 {
-    "name": "programming_cat/querylog",
+    "name": "programming_cat/laravel-querylog",
     "description": "output query log with 'querylog' channel",
     "type": "library",
     "keywords": [
