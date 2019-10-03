@@ -41,10 +41,6 @@ class QueryLogServiceProvider extends ServiceProvider
             );
             if ($skip) return;
 
-            // アクティビティログとauditログへの書き込みは記録しないよ。
-            if (Str::startsWith($sql, ['insert into `activity_logs`', 'insert into `audits`'])) {
-                return;
-            }
             // フォーマット
             for ($i = 0; $i < count($query->bindings); $i++) {
                 $sql = preg_replace("/\?/", is_int($query->bindings[$i]) ? $query->bindings[$i] : "'".$query->bindings[$i]."'" , $sql, 1);
