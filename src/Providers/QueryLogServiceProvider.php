@@ -56,7 +56,7 @@ class QueryLogServiceProvider extends ServiceProvider
                 $sql = preg_replace("/\?/", is_int($query->bindings[$i]) ? $query->bindings[$i] : "'".$query->bindings[$i]."'" , $sql, 1);
             }
             // 記録
-            Log::channel('querylog')->debug("(".$query->time."ms)[".config('database.connections.'.$query->connectionName.'.database', $query->connectionName)."] => ".$sql);
+            Log::channel('querylog')->debug("(".$query->time."ms)[".$query->connection->getDatabaseName()."] => ".$sql);
         });
         Event::listen(TransactionBeginning::class, function (TransactionBeginning $event) {
             $this->transactionTime = microtime(true);
